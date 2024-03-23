@@ -1,2 +1,5 @@
 # bulk-Email-Sender
-A web app for mail sending in bulk using various emaill
+The bulk-Email-sender is alloww users to send mail in bulk using various email & password
+
+you can create virtual environment for better experience about project
+
