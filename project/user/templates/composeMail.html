@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+{% load my_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Compose Email</title>
+            <!-- Bootstrap CSS -->
+            <!-- Custom styles for dark theme -->
+            <style>
+
+            </style>
+      </head>
+
+      <body>
+            <br><br><br><br>
+
+            <div class="container">
+                  <div style=" display:flex; background-color: rgb(26, 30, 33);" class="">
+                        <div class="col rounded col-5">
+                              <h3 class="pl-4">Compose mail</h3>
+
+                              <form class="m-4 p-3 rounded " style="border:1px solid white ;" method="post" action="{% url 'send' %}">
+                                    <label for="subject">Subject:</label>
+                                    <input style="color: white;background-color: rgb(32, 29, 29);" type="text" name="subject" id="id_subject" class="form-control input">
+                                    <br>
+
+                                    <label for="message">Message:</label>
+                                    <textarea style="color: white;background-color: rgb(32, 29, 29)" class="form-control" name="message" id="id_message" cols="30" rows="10"></textarea>
+                                    <p><i>You can use html tags inside message to desing mail</i></p>
+                                    <br>
+                                    <label for="number">Choose, one email how many time send mail</label>
+                                    <input style="color: white;background-color: rgb(32, 29, 29)" type="number" name="number" id="id_number" class="form-control">
+                                    <p>Number shuold be less than 10</p>
+
+                                    <input type="submit" class="btn btn-secondary bg-dark" value="Send">
+
+                                    {% csrf_token %}
+                              </form>
+
+
+                        </div>
+                        <div class="col col-6 offset-1">
+
+                        </div>
+                  </div>
+            </div>
+            <!-- Bootstrap JS (optional) -->
+      </body>
+
+</html>
+{% endblock content %}

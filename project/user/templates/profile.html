@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+      <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Profile Page</title>
+            <!-- Bootstrap CSS -->
+            <!-- Custom styles for dark theme -->
+            <style>
+                  body {
+                        background-color: #343a40;
+                        /* Dark background color */
+                        color: #f8f9fa;
+                        /* Light text color */
+                  }
+
+                  .jumbotron {
+                        background-color: #343a40;
+                        /* Dark background color */
+
+                  }
+
+                  .card {
+                        background-color: #495057;
+                        /* Dark card background color */
+                  }
+
+                  .card-header {
+                        background-color: #343a40;
+                        /* Dark card header background color */
+                        color: #f8f9fa;
+                        /* Light card header text color */
+                  }
+            </style>
+      </head>
+
+      <body>
+            <br><br>
+            <div class="container-fluid mt-5">
+
+                  <div class="row">
+                        <div class="col col-3 offset-3 p-3 ">
+                              <h1 class="display-4">Profile</h1>
+                              <p class="lead">Welcome To Your Profile Page</p>
+                        </div>
+                        <div class="col col-3">
+                              <!-- Placeholder for profile picture -->
+                              <img width='100' src="{% static 'images/profile.jpg' %}" alt="Profile Picture" class="img-fluid rounded-pill">
+                              <p>Username: {{ user.username }}</p>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col-md-11">
+                              <div class="card mb-4 offset-1">
+                                    <div class="card-header">
+                                          Upload Or Manage Email Files
+                                    </div>
+                                    <div class="card-body">
+                                          <div class="row">
+                                                <p>Files Uploaded by You</p>
+                                                <div class="col col-5 ">
+                                                      <div class="rounded p-3  border offset-1">
+                                                            {% for file in sender %}
+                                                            {% if file.author == request.user  %}
+                                                            <ul>
+                                                                  <li>{{ file.file.name }}
+                                                                        <a class="btn btn-success " href="{{ file.file.url }}">Download</a>
+                                                                  </li>
+                                                            </ul>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                            <a class="btn bg-secondary border" href="{% url 'uploadfile' %}"> Upload Another</a>
+                                                            <p><i>If you Upload another file previouse file will be delete automatically <br>
+                                                                        you can download file and add more credential
+                                                                  </i></p>
+                                                      </div>
+
+                                                </div>
+                                                <div class="col col-7 ">
+                                                      <div class="rounded p-3  border ">
+                                                            <ol>
+                                                                  {% for file in receiver %}
+                                                                  {% if file.author == request.user  %}
+                                                                  <li class="p-1">
+                                                                        <div class="row">
+                                                                              <table class="table">
+                                                                                    <tbody>
+                                                                                          <tr>
+                                                                                                <div class="col">
+                                                                                                      {{ file.file.name }}
+                                                                                                </div>
+                                                                                          </tr>
+                                                                                          <tr>
+                                                                                                <div class="col">
+
+                                                                                                      <a class="btn btn-success " href="{{ file.file.url }}">Download</a>
+                                                                                                      <a class="btn btn-primary " href="{{ file.file.url }}">Update</a>
+                                                                                                      <a class="btn btn-danger " href="{% url 'delete' id=file.id %}">Delete</a>{{ file.file.id }}
+                                                                                                </div>
+                                                                                          </tr>
+                                                                                    </tbody>
+                                                                              </table>
+                                                                        </div>
+                                                                  </li>
+
+                                                                  {% endif %}
+                                                                  
+                                                                  {% endfor %}
+                                                            </ol>
+
+                                                            <a style="vertical-align: bottom;" class="btn  bg-secondary border" href="{% url 'uploadfile' %}"> Upload More</a>
+                                                      </div>
+                                                </div>
+
+                                          </div>
+
+
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+            <!-- Bootstrap JS (optional) -->
+            <script>
+                  document.getElementById('executePython').addEventListener('click', function () {
+                        fetch('/run_python_script')
+                              .then(response => response.json())
+                              .then(data => {
+                                    console.log(data.message); // Output the result to the console
+                                    // You can update your webpage with the result here
+                              })
+                              .catch(error => console.error('Error:', error));
+                  });
+            </script>
+
+
+
+
+      </body>
+
+</html>
+
+
+{% endblock content %}

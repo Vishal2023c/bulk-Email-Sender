@@ -26,6 +26,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
+    'user',
+
+    'crispy_forms',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -106,14 +110,39 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media'),
-
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+print(MEDIA_ROOT)
 
 STATIC_URL = '/static/'
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR/'mainapp/media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gmahendrasingh304@gmail.com'
+# EMAIL_HOST_PASSWORD = 'osowsexoaumhendd'
+EMAIL_HOST_PASSWORD = 'khblgwegzayibvxx'
+
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'home'
+
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+CELERY_TIMEZONE = "Asia/Kolka ta"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+

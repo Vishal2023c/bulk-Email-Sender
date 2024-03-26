@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container "><br><br>
+      {% if temp %}
+
+      <div id="alert" class="alert text-light alert-dark bg-dark" role="alert">
+            <div class="row">
+                  <div class="col col-4">
+                        <p>File uploaded successfully</p>
+                  </div>
+                  <div class=" col col-1 offset-7">
+                        <button class="btn btn-secondary" onclick='hide()'>close</button>
+                  </div>
+            </div>
+      </div>
+      {% endif %}
+
+
+      <div class="row">
+            <div style="border: 2px solid gray; border-radius : 30px;" class=" border-light col-sm-5">
+                  <form class='p-5' method="post" enctype="multipart/form-data" action="">
+                        <br>
+
+                        <label>Select the CSV/TXT File Containing Email & Password That Will be Used To Send Mail<br> Choose Only CSV/TXT </label>
+                        <br><br>
+                        {{form1.file}}<br><br>
+                        <input type="hidden" value="{{ user.username }}" name="author" id='id_author'>
+
+                        <input type="hidden" name="value" value="1">
+                        <!-- <input accept=".csv, .txt" type="file" id="id_file" name="file"><br><br> -->
+                        <button class="btn btn-secondary bg-dark">Upload File</button>
+
+                        {% csrf_token %}
+
+                  </form>
+
+            </div>
+            <div style="border: 2px solid gray; border-radius: 30px;" class="border-light col-sm-5 offset-2">
+                  <form class='p-5' method="post" action='' enctype="multipart/form-data" action="">
+
+                        <br>
+
+                        <p>Choose Emails to Receive Mail<br> Choose Only CSV/TXT </p>
+                        <br><br>
+                        {{form2.file}}
+                        <input type="hidden" value="{{ user.username }}" name="author" id='id_author'>
+
+                        <br><br>
+                        <input type="hidden" name="value" value="2">
+
+                        <!-- <input accept=".csv, .txt" type="file" id="id_file" name="file"><br><br> -->
+                        <button class="btn btn-secondary bg-dark">Upload File</button>
+                        {% csrf_token %}
+
+                  </form>
+
+            </div>
+      </div>
+      <script>
+            function hide() {
+                  document.getElementById('alert').style.display = 'none'
+            }
+      </script>
+      {% endblock content %}
