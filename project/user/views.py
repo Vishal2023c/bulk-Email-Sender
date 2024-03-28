@@ -132,26 +132,21 @@ def send(request):
             message = request.POST['message']
             number = request.POST['number']
             file = receiverFileModel.objects.all()
+            print('submit')
             
+            ls=[]
             for emailfile in file:
                   if emailfile.author == request.user:
+                        print('author')
                         with open(emailfile.file.path,'r') as f:
                               f=f.read().splitlines()
-                              ls=[]
                               for i in f:
                                     print(i)
                                     if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',i):
-                                          print('matched')
+                                          ls=i
 
-                                          sending = mail.send_mail(subject, message, settings.EMAIL_HOST_USER,[i], 
-                                          fail_silently=False)
-                                          
-                                          
+            print(ls)
 
-
-            # sending = mail.send_mail('varification code', message, settings.      EMAIL_HOST_USER, [], fail_silently=False)
-      else:
-            print('no post')
       if True:
             return redirect(composeMail)
 

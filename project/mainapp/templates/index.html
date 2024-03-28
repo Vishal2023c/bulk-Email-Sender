@@ -59,51 +59,68 @@
             </style>
       </head>
 
-      <body>
-            <section class="hero">
-                  <div class="container">
-                        <br><br>
-                        <h2>Welcome to Bulk Mail Sender</h2>
-                        <p class="lead">Simplify Your Email Campaigns With Our Bulk Mail Sending Solution.</p>
-                        <a href="#" class="btn btn-primary">Get Started</a>
+      {% if res %}<br><br><br>
+      <div style="margin-top: 70px;  border: 1px solid red;" id="alert" class="alert alert-danger fixed-top" role="alert">
+            <div class="row">
+                  <div class="col  d-flex col-4">
+                        <h5>Mail sending........</h5>
+                        <p class="ps-3"> please do not refresh page</p>
+
                   </div>
-            </section>
-            <section class="benefits py-5">
-                  <div class="container">
-                        <h2 class='p-3'>Why Choose Us ?</h2>
-                        <div class="row">
-                              <div class="col-3">
-                                    <div class="card h-100 shadow-sm">
-                                          <div class="card-body">
-                                                <h3>Manage Multiple Accounts</h3>
-                                                <p class="card-text">Send Emails From All Your Email Addresses in One go.</p>
-                                          </div>
+                  <div class="  col col-1 offset-7">
+                        <button class="btn  btn-danger" onclick='hide()'>close</button>
+                  </div>
+            </div>
+      </div>
+      {% endif %}
+      <section class="hero">
+            <div class="container">
+                  <h2>Welcome to Bulk Mail Sender</h2>
+                  <p class="lead">Simplify Your Email Campaigns With Our Bulk Mail Sending Solution.</p>
+                  <a href="#" class="btn btn-primary">Get Started</a>
+            </div>
+      </section>
+      <section class="benefits py-5">
+            <div class="container">
+                  <h2 class='p-3'>Why Choose Us ?</h2>
+                  <div class="row">
+                        <div class="col-3">
+                              <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                          <h3>Manage Multiple Accounts</h3>
+                                          <p class="card-text">Send Emails From All Your Email Addresses in One go.</p>
                                     </div>
                               </div>
-                              <div class="col-3 offset-1">
-                                    <div class="card h-100 shadow-sm"> 
-                                          <div class="card-body">
-                                                <h3>Build and Clean Email Lists</h3>
-                                                <p class="card-text">Upload, manage, and Clean Your Email Lists For Better Deliverability.</p>
-                                          </div>
+                        </div>
+                        <div class="col-3 offset-1">
+                              <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                          <h3>Build and Clean Email Lists</h3>
+                                          <p class="card-text">Upload, manage, and Clean Your Email Lists For Better Deliverability.</p>
                                     </div>
                               </div>
-                              <div class="col-3 offset-1">
-                                    <div class="card h-100 shadow-sm">
-                                          <div class="card-body">
-                                                <h3>Track Campaign Performance</h3>
-                                                <p class="card-text">See How Your Emails Are Performing With Detailed Analytics.</p>
-            </section>
+                        </div>
+                        <div class="col-3 offset-1">
+                              <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                          <h3>Track Campaign Performance</h3>
+                                          <p class="card-text">See How Your Emails Are Performing With Detailed Analytics.</p>
+      </section>
 
-            <footer>
-                  <div class="container">
-                        <p>&copy; 2024 Bulk Mail Sender. All rights reserved.</p>
-                  </div>
-            </footer>
+      <footer>
+            <div class="container">
+                  <p>&copy; 2024 Bulk Mail Sender. All rights reserved.</p>
+            </div>
+      </footer>
 
-            <!-- Bootstrap JS (Optional) -->
-           
+      <!-- Bootstrap JS (Optional) -->
+      <script>
+            function hide() {
+                  document.getElementById('alert').style.display = 'none'
+            }
+      </script>
       </body>
+
 
 </html>
 

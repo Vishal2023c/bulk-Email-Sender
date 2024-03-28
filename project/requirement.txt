@@ -1,0 +1,4 @@
+rabbitmq
+rabbitmq-server
+celery
+kombu

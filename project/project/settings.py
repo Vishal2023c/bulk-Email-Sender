@@ -130,7 +130,8 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gmahendrasingh304@gmail.com'
-# EMAIL_HOST_PASSWORD = 'osowsexoaumhendd'
+# EMAIL_HOST_USER = 'mahendrasinghstudy6977@gmail.com'
+# EMAIL_HOST_PASSWORD = 'wnpnidzcozxygqiy'
 EMAIL_HOST_PASSWORD = 'khblgwegzayibvxx'
 
 
@@ -138,11 +139,11 @@ LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 
+CELERY_BROKER_URL = 'redis://localhost:6379'
+# CELERY_TIMEZONE = "Australia/Tasmania"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
 
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-CELERY_TIMEZONE = "Asia/Kolka ta"
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
 
 
 
