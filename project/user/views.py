@@ -93,11 +93,10 @@ def profile(request):
 
 def resetPassword(request):
       if request.method == "POST":
-            # otp = random.randrange(11111, 99999)
+            otp = random.randrange(11111, 99999)
             email = request.POST.get('email', False)
-            # msg = ' from Bulk mail sender Your OTP is {}'.format(otp)
-            # sending = mail.send_mail('varifi cation code for password reset ', msg, settings.EMAIL_HOST_USER, [ email], fail_silently=False)
-            otp = 12345
+            msg = ' from Bulk mail sender Your OTP is {}'.format(otp)
+            sending = mail.send_mail('varifi cation code for password reset ', msg, settings.EMAIL_HOST_USER, [ email], fail_silently=False)
             request.session['otp'] = otp
             request.session['email'] = email
             return render(request,"passwordReset.html",{'temp':'temp'})
