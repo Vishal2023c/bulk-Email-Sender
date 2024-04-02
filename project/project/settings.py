@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+
+from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -140,9 +142,16 @@ LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
-# CELERY_TIMEZONE = "Australia/Tasmania"
-# CELERY_TASK_TRACK_STARTED = True
+CELERY_RESULT_BACKEND='redis://localhost:6379'
+CELERY_ACCEPT_CONTENT=['application/json']
+CELERY_RESULT_SERIALIZER='json'
+CELERY_TASK_SELERLIZER='json'
+CELERY_TIMEZONE = "Asia/Kolkata"
+CELERY_TASK_TRACK_STARTED = True
 # CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+
 
 
 

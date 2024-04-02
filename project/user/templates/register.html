@@ -18,13 +18,10 @@
                         border-radius: 20px;
                         width: 450px
                   }
-
-
                   .inputbox {
                         margin: 40px;
                         position: relative;
                   }
-
                   input {
                         border: 1px solid white;
                         border-radius: 8px;
@@ -34,20 +31,16 @@
                         height: 40px;
                         width: 300px;
                         transition-duration: 600ms;
-
                   }
-
                   input[type=number]::-webkit-inner-spin-button,
                   input[type=number]::-webkit-outer-spin-button {
                         -webkit-appearance: none;
                   }
-
                   input[type=submit] {
                         background: rgb(60, 60, 60);
                         width: 100px;
                         transition-duration: 200ms;
                   }
-
                   input[type=submit]:hover {
                         background-color: black;
 
@@ -66,21 +59,18 @@
                         transition-duration: 600ms;
                         height: 14px;
                   }
-
                   .input:focus,
                   .input:not(:placeholder-shown).input:not(:focus) {
                         border: 1px solid rgb(121, 183, 208);
                   }
-
                   .input:focus~.label,
                   .input:not(:placeholder-shown).input:not(:focus)~.label {
                         top: -12px;
                         left: 10px;
                         font-size: 15px;
                         color: rgb(121, 183, 208);
-                        background-color: #1c1c1c;
+        background-color:rgb(33, 37, 41);
                   }
-
                   .row {
                         margin-left: 10px;
                         margin-top: -20px;
@@ -106,7 +96,6 @@
                         height: 40px;
                         padding: 5px;
                         color: rgb(23, 2, 2);
-
                   }
 
                   .btn-close {
@@ -114,7 +103,6 @@
                         opacity: 1;
                         width: 10px;
                         height: 5px;
-
                   }
 
                   .hrdiv {
@@ -170,23 +158,24 @@
             <center>
                   <br><br><br><br>
 
-
-
-
+                  <form action="">
+                        
+                        {% for msg in messages %}
+                        <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
+                                    <div class="col col-4">
+                                          <strong>{{ msg }}</strong>
+                                    </div>
+                                    <div class=" col col-1 offset-7">
+                                          <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
+                                    </div>
+                              </div> 
+                              
+                        {% endfor %}
+                  </form>
                   <form method="POST" action="{% url 'register' %}">
                         <div class="box">
 
-
-                              {% if messages %}
-                              {% for message in messages %}
-                              <span {% if message.tags %} class="{{message.tags}} message" {% endif %}>{{message}}
-                              </span>
-                              {% endfor %}
-                              {% endif %}
-
                               <h2>Sign-in</h2>
-
-
 
                               <div class="inputbox">
                                     <!-- <input class='input' type="email" id="id_email" value="{{ request.session.email }}" readonly onkeypress="myfunction()" name="email"> -->
@@ -234,8 +223,6 @@
                   }
 
             </script>
-
-
 
       </body>
 

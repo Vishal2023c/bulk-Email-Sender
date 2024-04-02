@@ -4,10 +4,20 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<br><br><br>
+      {% for msg in messages %}
+            <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
+                  <div class="col col-4">
+                        <strong>{{ msg }}</strong>
+                  </div>
+                  <div class=" col col-1 offset-7">
+                        <button class="btn btn-secondary" onclick='hide()'>close</button>
+                  </div>
+            </div> 
+      {% endfor %}
 <div class="container "><br><br>
       {% if temp %}
-
-      <div id="alert" class="alert text-light alert-dark bg-dark" role="alert">
+      {% comment %} <div id="alert" class="alert text-light alert-dark bg-dark" role="alert">
             <div class="row">
                   <div class="col col-4">
                         <p>File uploaded successfully</p>
@@ -16,7 +26,7 @@
                         <button class="btn btn-secondary" onclick='hide()'>close</button>
                   </div>
             </div>
-      </div>
+      </div> {% endcomment %}
       {% endif %}
 
 

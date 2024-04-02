@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
+
+{% load widget_tweaks %}
+
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,10 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-      body {
-        background-color: rgb(28, 28, 28);
-      }
-
       .box {
         background-color: rgb(33, 37, 41);
         border: 1px solid white;
@@ -163,83 +163,98 @@
       }
     </style>
   </head>
+  <br><br><br>
 
-  <body>
-    <center><br><br><br>
-      <div style="display: none;" id="message" class="alert  alert-dismissible fade show" role="alert">
+  <center>
 
+    {% if temp %}
+{% for msg in messages %}
+      <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
+        <div class="col col-4">
+          <strong>{{ msg }}</strong>
+        </div>
+        <div class=" col col-1 offset-7">
+          <button class="btn btn-secondary" onclick='hide()'>close</button>
+        </div>
       </div>
-      
-      <form action="" method="POST">
-
-
-        <div class="box">
-          {% for msg in message %}
-            <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
-                  <div class="col col-4">
-                        <strong>{{ msg }}</strong>
-                  </div>
-                  <div class=" col col-1 offset-7">
-                        <button class="btn btn-secondary" onclick='hide()'>close</button>
-                  </div>
-            </div> 
       {% endfor %}
-          <h3> Bulk Mail Sender</h3>
-          <h4 style='color:rgb(174, 217, 234)'> LOGIN</h4>
-          <div class="inputbox">
-            <input required class="input"  placeholder=" " type="text" id="username" name="username">
-            <label class="label" id='label' for="username">Username</label>
-            <p><i>Sing-up email is Your Username</i></p>
-          </div>
-          <div class="inputbox">
-            <input required class="input" type="password" placeholder=" " name="password" id="password" />
 
-            <label class="label" for="password">Password</label>
-            <i class="bi bi-eye-slash" id="togglePassword"></i>
-          </div>
-          <div class="row ">
-            <div class="col">
-              <a href="{% url "passwordreset" %}">Forgot Password?</a>
-            </div>
-            <div class="col">
-              <a href="{% url 'registration' %}">Sign-up</a>
-            </div>
-          </div>
+    <form method="post" action="{% url 'otpvarify' %}">
 
+      
 
+      <div class="box">
 
-          <div class="inputbox">
-            <input class="submit btn-primary" type="submit" name="btn" id="submit" value='Login'>
+        <h3>We sent OTP on your Email </h3>
+
+        <div class="inputbox">
+          <input type="email" readOnly class="input" value='{{ request.session.email}}' placeholder=" " id="email">
+          <label class="label" for="email"> Email</label>
+        </div>
+
+        <div id="otpbox" class="inputbox">
+
+          <input type="number" name="userotp" class="input" placeholder=" " id="otp">
+          <label class="label" for="otp">Ener OTP here</label>
+        </div>
+        <div class="row ">
+          <div class="col ">
 
           </div>
 
         </div>
-        {% csrf_token %}
-      </form>
 
-      <script>
+        <div class="inputbox">
+          <input type="submit" id="varify" class="input" value="Varify">
+        </div>
 
-        function hide() {
-          document.getElementById('message').style.display = 'none';
+      </div>
+      {% csrf_token %}
+    </form>
+
+    {% else %}
+
+    <form method="post" action="sendmail">
+      <div class="box">
+        <h3>Enter your Email for varification</h3>
+
+        <div class="inputbox">
+          <input type="email" name='email' required class="input" placeholder=" " id="email">
+          <label class="label" for="email"> Email</label>
+        </div>
+        <div class="row ">
+          <div style="margin-left:-70px;" class="col ">
+            <a href="{% url 'login' %}">Already have an account!</a>
+          </div>
+        </div>
+
+
+        <div class="inputbox">
+          <input type="submit" id="send_otp" class="input" value="Send OTP">
+        </div>
+
+      </div>
+      {% csrf_token %}
+
+    </form>
+    {{form}}
+
+    {% endif %}
+
+  </center>
+  {% csrf_token %}
+
+  <script>
+    function myfunction() {
+      let a = document.getElementById('id_email').value;
+      for (let i in a) {
+        if (1 == 1) {
         }
+      }
+    }
+    function hide(){
+      document.getElementById('alert').style.display='none'
+    }
 
-        
-
-        const togglePassword = document.querySelector("#togglePassword");
-        const password = document.querySelector("#password");
-
-        togglePassword.addEventListener("click", function () {
-          // toggle the type attribute
-          const type = password.getAttribute("type") === "password" ? "text" : "password";
-          password.setAttribute("type", type);
-
-          // toggle the icon
-          this.classList.toggle("bi-eye");
-        });
-      </script>
-
-    </center>
-  </body>
-
-</html>
-{% endblock content %}
+  </script>
+  {% endblock content %}

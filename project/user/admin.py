@@ -11,5 +11,5 @@ class senderRegister(admin.ModelAdmin):
 @admin.register(receiverFileModel)
 class receiverRegister(admin.ModelAdmin):
       list_display=[
-            'file'
+            'id','file','author'
       ]

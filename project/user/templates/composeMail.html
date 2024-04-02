@@ -10,6 +10,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Compose Email</title>
             <!-- Bootstrap CSS -->
+            
             <!-- Custom styles for dark theme -->
             <style>
 
@@ -26,15 +27,15 @@
 
                               <form class="m-4 p-3 rounded " style="border:1px solid white ;" method="post" action="{% url 'mail' %}">
                                     <label for="subject">Subject:</label>
-                                    <input style="color: white;background-color: rgb(32, 29, 29);" type="text" name="subject" id="id_subject" class="form-control input">
+                                    <input required style="color: white;background-color: rgb(32, 29, 29);" type="text" name="subject" id="id_subject" class="form-control input">
                                     <br>
 
                                     <label for="message">Message:</label>
-                                    <textarea style="color: white;background-color: rgb(32, 29, 29)" class="form-control" name="message" id="id_message" cols="30" rows="10"></textarea>
+                                    <textarea required style="color: white;background-color: rgb(32, 29, 29)" class="form-control" name="message" id="id_message" cols="30" rows="10"></textarea>
                                     <p><i>You can use html tags inside message to desing mail</i></p>
                                     <br>
                                     <label for="number">Choose, one email how many time send mail</label>
-                                    <input style="color: white;background-color: rgb(32, 29, 29)" type="number" name="number" id="id_number" class="form-control">
+                                    <input required style="color: white;background-color: rgb(32, 29, 29)" type="number" name="number" id="id_number" class="form-control">
                                     <p>Number shuold be less than 10</p>
 
                                     <input type="submit" class="btn btn-secondary bg-dark" value="Send">

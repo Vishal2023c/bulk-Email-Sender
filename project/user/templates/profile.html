@@ -67,7 +67,7 @@
                                                 <div class="col col-5 ">
                                                       <div class="rounded p-3  border offset-1">
                                                             {% for file in sender %}
-                                                            {% if file.author == request.user  %}
+                                                            {% if file.author == request.user %}
                                                             <ul>
                                                                   <li>{{ file.file.name }}
                                                                         <a class="btn btn-success " href="{{ file.file.url }}">Download</a>
@@ -76,7 +76,7 @@
                                                             {% endif %}
                                                             {% endfor %}
                                                             <a class="btn bg-secondary border" href="{% url 'uploadfile' %}"> Upload Another</a>
-                                                            <p ><i>If you Upload another file previouse file will be delete automatically <br>
+                                                            <p><i>If you Upload another file previouse file will be delete automatically <br>
                                                                         you can download file and add more credential
                                                                   </i></p>
                                                       </div>
@@ -86,7 +86,7 @@
                                                       <div class="rounded p-3  border ">
                                                             <ol>
                                                                   {% for file in receiver %}
-                                                                  {% if file.author == request.user  %}
+                                                                  {% if file.author == request.user %}
                                                                   <li class="p-1">
                                                                         <div class="row">
                                                                               <table class="table">
@@ -98,9 +98,8 @@
                                                                                           </tr>
                                                                                           <tr>
                                                                                                 <div class="col">
-
                                                                                                       <a class="btn btn-success " href="{{ file.file.url }}">Download</a>
-                                                                                                      <a class="btn btn-primary " href="{{ file.file.url }}">Update</a>
+                                                                                                      <a class="btn btn-primary " href="{% url 'update' id=file.id  %}">Update</a>
                                                                                                       <a class="btn btn-danger " href="{% url 'delete' id=file.id %}">Delete</a>{{ file.file.id }}
                                                                                                 </div>
                                                                                           </tr>
@@ -110,7 +109,7 @@
                                                                   </li>
 
                                                                   {% endif %}
-                                                                  
+
                                                                   {% endfor %}
                                                             </ol>
 

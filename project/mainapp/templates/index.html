@@ -11,6 +11,7 @@
             <title>Bulk Mail Sender</title>
             <!-- Bootstrap CSS -->
 
+
             <style>
                   body {
                         background-color: #212529;
@@ -58,6 +59,11 @@
                   }
             </style>
       </head>
+      {% if messages %}
+      {% for message in messages %}
+      <h4> message</h4>
+      {% endfor %}
+      {% endif %}
 
       {% if res %}<br><br><br>
       <div style="margin-top: 70px;  border: 1px solid red;" id="alert" class="alert alert-danger fixed-top" role="alert">
@@ -77,7 +83,7 @@
             <div class="container">
                   <h2>Welcome to Bulk Mail Sender</h2>
                   <p class="lead">Simplify Your Email Campaigns With Our Bulk Mail Sending Solution.</p>
-                  <a href="#" class="btn btn-primary">Get Started</a>
+                  <a href="{% url 'profile' %}" class="btn btn-primary">Get Started</a>
             </div>
       </section>
       <section class="benefits py-5">
@@ -106,7 +112,6 @@
                                           <h3>Track Campaign Performance</h3>
                                           <p class="card-text">See How Your Emails Are Performing With Detailed Analytics.</p>
       </section>
-
       <footer>
             <div class="container">
                   <p>&copy; 2024 Bulk Mail Sender. All rights reserved.</p>
