@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-
+import anymail
 from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,9 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-uep5!0kp=u2*!k%t^5q-xi36)07mvag(rqtqjwdl%#g(@vb)0@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -30,8 +31,13 @@ INSTALLED_APPS = [
     'mainapp',
     'user',
 
+    # add email backend anymail
+
     'crispy_forms',
     'widget_tweaks',
+    
+    # django cleanup for removing unwanted files
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -70,8 +76,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bulk_mail_sender',
+        'USER': 'root',
+        'PASSWORD': '12345',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -132,9 +142,18 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gmahendrasingh304@gmail.com'
+EMAIL_HOST_PASSWORD = 'khblgwegzayibvxx'#gmahendrasingh@gmail.com gmail app password
 # EMAIL_HOST_USER = 'mahendrasinghstudy6977@gmail.com'
-# EMAIL_HOST_PASSWORD = 'wnpnidzcozxygqiy'
-EMAIL_HOST_PASSWORD = 'khblgwegzayibvxx'
+# EMAIL_HOST_PASSWORD = 'lsibuydqmqjgoohv' #gmahendrasingh@gmail.com microsoft app password
+# EMAIL_HOST_PASSWORD = 'wnpnidzcozxygqiy' #mahendrasinghstudy6977@gmail.com gmail app password
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'# django email smtp backends
+# EMAIL_HOST = 'mail.geektheo.com'  # Email service provider
+# EMAIL_PORT = 465  # Port for outgoing smtp servr
+# EMAIL_USE_TLS = True  # Use TLS for secure communication
+# EMAIL_HOST_USER = 'bulkmail1@geektheo.com'  # Email address
+# EMAIL_HOST_PASSWORD = 'bulkmail1@bulkmail1'  # Email password
 
 
 LOGIN_REDIRECT_URL = 'home'

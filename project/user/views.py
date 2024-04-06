@@ -18,12 +18,13 @@ def sendMail(request):
       if request.method == "POST":
             otp = random.randrange(11111, 99999)
             email = request.POST.get('email', False)
-            msg = f'<h3>Verify Your Email Address for Bulk mail sender</h3>Hi Dear<br>Thanks for signing up for Bulk mail sender! To complete your registration and the features, please verify your email address by entering the One-Time Password (OTP) we sent you.<br><b>Your OTP is: {otp}</b><br>This OTP will expire in 3 minutes.'
+            msg = f'<h3>Verify Your Email Address for Bulk mail sender</h3>Hello {email}<br>Thanks for signing up for Bulk mail sender! To complete your registration and the features, <br> please verify your email address by entering the One-Time Password (OTP) we sent you.<br><b>Your OTP is: {otp}</b><br>This OTP will expire in 3 minutes.'
             sending = EmailMessage('varification code', msg,to=[email])
             sending.content_subtype='html'
             sending.send()
             request.session['otp'] = otp
             request.session['email'] = email
+            messages.success(request,'Otp sent ')
             return render(request,"emailvarify.html",{'temp':'temp'})
 
 def registration(request):
@@ -59,7 +60,7 @@ def register(request):
 
                  messages.success(request,'Sing-Up SuccessFully...')
                  email = request.session['Username']
-                 msg = f'<h3>Your signing-up proccese is complite for Bulk mail sender</h3>Hi {email}<br>Thanks for signing up for Bulk mail sender.Your registration is successfull,<br>Your Username is your Email ID.'
+                 msg = f'<h3>Your signing-up proccese is complite for Bulk mail sender</h3>Hi {email}<br>Thanks for signing up for Bulk mail sender.Your registration is successfull,<br>Your Email is your username.'
                  sending = EmailMessage('Thank you for Sign-up', msg,to=[email])
                  sending.content_subtype='html'
                  try:
@@ -73,21 +74,12 @@ def register(request):
       form = UserRegisterForm()
       return render(request,"register.html",{'form':form})
 
+
+
 def profile(request): 
       senderfile = senderFileModel.objects.all()
       receiverfile = receiverFileModel.objects.all()
       context = {'sender':senderfile, "receiver":receiverfile}
-      ls=[]
-      for files in senderfile:
-            if request.user == files.author:
-                  with open(files.file.path,"r") as f:
-                        f=f.read().splitlines()
-                        for email in f:
-                              list = email.split(',')
-
-                              if list[0] == 'mahendrasinghstudy6977@gmail.com':
-                              #      email.delete('mahendrasinghstudy6977@gmail.com')
-                                   print(email)
 
       return render(request, 'profile.html',context)
 
@@ -146,15 +138,17 @@ def uploadfile(request):
                         if request.user==i.author:
                               i.delete()
                   senderFileModel.objects.create(file=file,author=user)
+                  messages.success(request,'File Uploaded successfully')
                   temp = True
 
             elif int(value) == 2:
                   user = request.user
                   file = request.FILES['file']
                   receiverFileModel.objects.create(file=file,author=user)
+                  messages.success(request,'File Uploaded successfully')
                   temp = True
 
-      context = {'form1':form1,'form2':form2,'temp':temp}
+      context = {'form1':form1,'form2':form2}
 
       return render(request,'uploadfiles.html',context)
 
@@ -167,48 +161,50 @@ def deletefile(request,id):
       return redirect('profile')
 
 
-def updatefile(request,id):
-      
-      data = receiverFileModel.objects.get(id=id)
-      datalist = []
-      with open(data.file.path) as f:
-            f=f.read().splitlines()
-            datalist = list(f)
+def updatefile(request,id,value):
+      if value == 0:
+            data = senderFileModel.objects.get(id=id)
+            sender = []
+            if request.user == data.author:
+                  with open(data.file.path,"r") as f:
+                        f=f.read().splitlines()
+                        for email in f:
+                              sender.append(email.split(','))
+            sender.sort()
+            datalist = dict(sender)
+            x=0
+            return render(request,'updatefile.html',{'data':datalist,'x':x})
 
-      print(datalist)
-      x=1
-      return render(request,'updatefile.html',{'data':datalist,'x':x})
+
+      elif value == 1:
+            data = receiverFileModel.objects.get(id=id)
+            datalist = []
+            if request.user == data.author:
+                  with open(data.file.path) as f:
+                        f=f.read().splitlines()
+                        datalist = list(f)
+                  x=1
+            datalist.sort()
+            print(datalist)
+            return render(request,'updatefile.html',{'data':datalist,'x':x})
 
 
 @login_required
 def composeMail(request):
+      user = request.user
+      listfile=[]
+      try:
+            files = receiverFileModel.objects.all()
+            for file in files:
+                  if file.author == user:
+                        listfile.append(file)
+            return render(request,'composeMail.html',{'files':listfile})
+            
+      except:
+            messages.error(request,'Please first upload Recipients list ')
 
       return render(request,'composeMail.html')
 
-
-def send(request):
-      if request.method == "POST":
-            subject = request.POST['subject']
-            message = request.POST['message']
-            number = request.POST['number']
-            file = receiverFileModel.objects.all()
-            print('submit')
-            
-            ls=[]
-            for emailfile in file:
-                  if emailfile.author == request.user:
-                        print('author')
-                        with open(emailfile.file.path,'r') as f:
-                              f=f.read().splitlines()
-                              for i in f:
-                                    print(i)
-                                    if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',i):
-                                          ls=i
-
-            print(ls)
-
-      if True:
-            return redirect(composeMail)
 
 
 

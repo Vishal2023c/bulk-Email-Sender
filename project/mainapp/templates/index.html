@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block home_active %}active{% endblock home_active %}
 {% block content %}
 
 <!DOCTYPE html>
@@ -59,26 +61,18 @@
                   }
             </style>
       </head>
-      {% if messages %}
-      {% for message in messages %}
-      <h4> message</h4>
+      <br><br><br><br>
+
+      {% for msg in messages %}
+            <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
+                  <div class="col col-4">
+                        <strong>{{ msg }}</strong>
+                  </div>
+                  <div class=" col col-1 offset-7">
+                       <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
+                  </div>
+            </div> 
       {% endfor %}
-      {% endif %}
-
-      {% if res %}<br><br><br>
-      <div style="margin-top: 70px;  border: 1px solid red;" id="alert" class="alert alert-danger fixed-top" role="alert">
-            <div class="row">
-                  <div class="col  d-flex col-4">
-                        <h5>Mail sending........</h5>
-                        <p class="ps-3"> please do not refresh page</p>
-
-                  </div>
-                  <div class="  col col-1 offset-7">
-                        <button class="btn  btn-danger" onclick='hide()'>close</button>
-                  </div>
-            </div>
-      </div>
-      {% endif %}
       <section class="hero">
             <div class="container">
                   <h2>Welcome to Bulk Mail Sender</h2>

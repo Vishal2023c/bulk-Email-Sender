@@ -2,9 +2,11 @@ from celery import Celery, shared_task
 from django.conf import settings
 from django.core import mail
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from user.models import senderFileModel,receiverFileModel
 from django.core.exceptions import *
 from mainapp.tasks import *
+
 
 # Create your tasks here
 from celery import shared_task
@@ -33,7 +35,7 @@ def send_mail(sender, receiver, message, subject, number):
       message = message
       number = int(number)
       subject = subject
-      sendefailed = {''}
+      senderfailed = {''}
       x=0
       for m, p in sender.items():
             settings.EMAIL_HOST_USER = m
@@ -42,13 +44,16 @@ def send_mail(sender, receiver, message, subject, number):
 
             for i in range(1,number):
                   try:
-                        sending = mail.send_mail(subject, message, settings.EMAIL_HOST_USER,  [receiver[x]],fail_silently=False)
+                        sending = EmailMessage(subject, message,to=[receiver[x]])
+                        sending.content_subtype='html'
+                        sending.send()
+                        # sending = mail.send_mail(subject, message, settings.EMAIL_HOST_USER,  [receiver[x]],fail_silently=False)
                         x+=1
                   except: 
-                        sendefailed.add(m)                    
+                        senderfailed.add(m)                    
                         break
                   if x==len(receiver):
-                        print(sendefailed)
+                        print(senderfailed)
                         return True
       
       

@@ -20,9 +20,8 @@ urlpatterns = [
     path('change-Password', views.changePassword, name='changePassword'),
     path('profile', login_required(views.profile), name='profile'),
     path('compose-mail', views.composeMail,name='composeMail'),
-    path('sending-mail',views.send,name='send'),
     path('delete-file/<int:id>',views.deletefile,name='delete'),
-    path('update-file/<int:id>',views.updatefile,name='update')
+    path('update-file/<int:value>/<int:id>',views.updatefile,name='update')
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

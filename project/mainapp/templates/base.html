@@ -134,9 +134,9 @@
             <div class="navbar-nav mr-auto">
 
               <a class="nav-item nav-link {% block home_active %}{% endblock home_active %} " href="{% url 'home' %}">Home</a>
-              <a class="nav-item nav-link " href="/admin">admin</a>
-              <a class="nav-item nav-link {% block criminal_active %}{% endblock criminal_active %}" href="{% url 'composeMail' %}">Compose Mail</a>
-              <a class="nav-item nav-link {% block criminallist_active %}{% endblock criminallist_active %}" href="{% url 'uploadfile' %}">Upload File</a>
+              <a class="nav-item nav-link " href="bulk-mail-sender/super-user/auth/admin/">admin</a>
+              <a class="nav-item nav-link {% block composemail_active %}{% endblock composemail_active %}" href="{% url 'composeMail' %}">Compose Mail</a>
+              <a class="nav-item nav-link {% block uploadfile_active %}{% endblock uploadfile_active %}" href="{% url 'uploadfile' %}">Upload File</a>
 
             </div>
 
@@ -162,7 +162,7 @@
 
               &nbsp;&nbsp;&nbsp;
               <div class='image-place'>
-                <a class="nav-item btn nav-link" href="{% url 'profile' %}">Profile</a>
+                <a class="nav-item nav-link {% block profile_active %}{% endblock profile_active %}" href="{% url 'profile' %}">Profile</a>
 
 
               </div>

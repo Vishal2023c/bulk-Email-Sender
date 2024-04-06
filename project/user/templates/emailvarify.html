@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
+{% block register_active %}active{% endblock register_active %}
+
 {% block content %}
 
 {% load widget_tweaks %}
+
+
 
 {% load crispy_forms_tags %}
 <!DOCTYPE html>
@@ -166,17 +170,19 @@
   <br><br><br>
 
   <center>
+   
 
     {% if temp %}
 {% for msg in messages %}
-      <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
+ <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
         <div class="col col-4">
           <strong>{{ msg }}</strong>
         </div>
         <div class=" col col-1 offset-7">
-          <button class="btn btn-secondary" onclick='hide()'>close</button>
+          <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
         </div>
       </div>
+      
       {% endfor %}
 
     <form method="post" action="{% url 'otpvarify' %}">
