@@ -8,16 +8,7 @@
 
 {% block content %}
 <br><br><br>
-      {% for msg in messages %}
-            <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
-                  <div class="col col-4">
-                        <strong>{{ msg }}</strong>
-                  </div>
-                  <div class=" col col-1 offset-7">
-                        <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
-                  </div>
-            </div> 
-      {% endfor %}
+      
 <div class="container "><br><br>
       
       <div class="row">
@@ -60,9 +51,5 @@
 
             </div>
       </div>
-      <script>
-            function hide() {
-                  document.getElementById('alert').style.display = 'none'
-            }
-      </script>
+      
       {% endblock content %}

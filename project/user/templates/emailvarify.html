@@ -172,18 +172,8 @@
   <center>
    
 
-    {% if temp %}
-{% for msg in messages %}
- <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
-        <div class="col col-4">
-          <strong>{{ msg }}</strong>
-        </div>
-        <div class=" col col-1 offset-7">
-          <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
-        </div>
-      </div>
-      
-      {% endfor %}
+    {% if request.session.email %}
+
 
     <form method="post" action="{% url 'otpvarify' %}">
 
@@ -200,7 +190,7 @@
 
         <div id="otpbox" class="inputbox">
 
-          <input type="number" name="userotp" class="input" placeholder=" " id="otp">
+          <input required type="number" name="userotp" class="input" placeholder=" " id="otp">
           <label class="label" for="otp">Ener OTP here</label>
         </div>
         <div class="row ">
@@ -258,9 +248,6 @@
         }
       }
     }
-    function hide(){
-      document.getElementById('alert').style.display='none'
-    }
-
+    
   </script>
   {% endblock content %}

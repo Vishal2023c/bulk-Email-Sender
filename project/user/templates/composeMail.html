@@ -13,17 +13,7 @@
 <div class="container-fluid">
 
       <div style=" display:flex; background-color: rgb(26, 30, 33);" class="row">
-            <div class="row">{% for msg in messages %}
-                  <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
-                        <div class="col col-4">
-                              <strong>{{ msg }}</strong>
-                        </div>
-                        <div class=" col col-1 offset-7">
-                              <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
-                        </div>
-                  </div>
-                  {% endfor %}
-            </div>
+            
             <div class="col col-sm-12 rounded">
 
                   <h3 class="pl-4">Compose mail</h3>
@@ -61,7 +51,11 @@
                                     </select>
 
 
-                              </div>
+                              </div><br>
+                              <div class="col col-5">
+                                    <label for="task_name"> Write Task Name:</label>
+                              <input title='Name for task to remember it' required style="color: white;background-color: rgb(32, 29, 29)" type="Text" name="task_name" id="id_task" class="form-control input">
+                                    </div>
 
 
                         </div>
@@ -88,9 +82,7 @@
 <!-- Bootstrap JS (optional) -->
 
 <script>
-      function hide() {
-            document.getElementById('alert').style.display = 'none'
-      }
+      
 
       const radio = document.getElementById('area').value
       console.log(radio)

@@ -3,14 +3,10 @@ from .forms import UserRegisterForm,receiverFileForm,senderFileForm
 from django.contrib.auth.models import User
 from .models import senderFileModel,receiverFileModel
 from django.views.generic import ListView
-from django.core import mail, exceptions
-from django.core.mail import EmailMessage
-from django.conf import settings 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from .tasks import signup_otp, signup_success,pass_reset_otp
 import random
-import re 
 
 
 
@@ -18,14 +14,19 @@ def sendMail(request):
       if request.method == "POST":
             otp = random.randrange(11111, 99999)
             email = request.POST.get('email', False)
-            msg = f'<h3>Verify Your Email Address for Bulk mail sender</h3>Hello {email}<br>Thanks for signing up for Bulk mail sender! To complete your registration and the features, <br> please verify your email address by entering the One-Time Password (OTP) we sent you.<br><b>Your OTP is: {otp}</b><br>This OTP will expire in 3 minutes.'
-            sending = EmailMessage('varification code', msg,to=[email])
-            sending.content_subtype='html'
-            sending.send()
-            request.session['otp'] = otp
-            request.session['email'] = email
-            messages.success(request,'Otp sent ')
-            return render(request,"emailvarify.html",{'temp':'temp'})
+
+            if User.objects.filter(username=email).first():
+                  messages.success(request,'Email is already registered')
+                  return redirect(registration)
+
+            else : 
+                  task = signup_otp(email,otp) 
+                  if task == True:
+                        request.session['otp'] = otp
+                        request.session['email'] = email
+                        messages.success(request,'Otp sent ')
+                        return redirect(registration)
+      return redirect('login')
 
 def registration(request):
 
@@ -42,7 +43,7 @@ def varifyotp(request):
                   return redirect(register)
             else:
                   messages.success(request,'Wrong OTP Please Try Again')
-                  return render(request,"emailvarify.html",{'temp':'temp'})
+                  return render(request,"emailvarify.html")
                   
 def register(request):
       if request.method == "POST":
@@ -51,32 +52,33 @@ def register(request):
             try:
                   if request.session['otp']:
                         del request.session['otp']
+                  if request.session['email']:
+                        del request.session['email']
             except:
                   pass
-            if u_fm.is_valid():
-                 username = request.POST['username']
-                 request.session['Username'] = username
-                 u_fm.save()
 
-                 messages.success(request,'Sing-Up SuccessFully...')
-                 email = request.session['Username']
-                 msg = f'<h3>Your signing-up proccese is complite for Bulk mail sender</h3>Hi {email}<br>Thanks for signing up for Bulk mail sender.Your registration is successfull,<br>Your Email is your username.'
-                 sending = EmailMessage('Thank you for Sign-up', msg,to=[email])
-                 sending.content_subtype='html'
-                 try:
-                     if request.session['otp']:
-                        del request.session['otp']
-                 except:
-                      pass
-                 sending.send()
-                 return redirect("login")
+            if u_fm.is_valid():
+                  username = request.POST['username']
+                  request.session['Username'] = username
+                  u_fm.save()
+
+                  email = request.session['Username']
+                  try:
+                        task = signup_success(email)
+                  except:
+                        pass
+                  messages.success(request,'Sing-Up SuccessFully...')
+
+                  return redirect("login")
+            else:
+                  pass
             
       form = UserRegisterForm()
       return render(request,"register.html",{'form':form})
 
 
-
-def profile(request): 
+@login_required
+def profile(request):  
       senderfile = senderFileModel.objects.all()
       receiverfile = receiverFileModel.objects.all()
       context = {'sender':senderfile, "receiver":receiverfile}
@@ -87,11 +89,10 @@ def resetPassword(request):
       if request.method == "POST":
             otp = random.randrange(11111, 99999)
             email = request.POST.get('email', False)
-            msg = ' from Bulk mail sender Your OTP is {}'.format(otp)
-            sending = mail.send_mail('varifi cation code for password reset ', msg, settings.EMAIL_HOST_USER, [ email], fail_silently=False)
+            task = pass_reset_otp(email,otp)
             request.session['otp'] = otp
             request.session['email'] = email
-            return render(request,"passwordReset.html",{'temp':'temp'})
+            return render(request,"passwordReset.html",{'temp':'temp'}  )
       
       return render(request,'passwordReset.html')
 
@@ -105,7 +106,6 @@ def changePassword(request):
             if int(user_otp) == otp:
                   if password1 == password2:
                         user = User.objects.get(username=email )
-                        print(user.username)
                         user.set_password(password1)
                         user.save()
                         messages.success(request,'Password changed successfully')
@@ -115,7 +115,7 @@ def changePassword(request):
             else:
                   messages.error(request,'wrong otp please try again')
                   return render(request,'passwordReset.html')
-      return HttpResponse('no post')
+      return render('home')
                    
                   
 
@@ -138,14 +138,14 @@ def uploadfile(request):
                         if request.user==i.author:
                               i.delete()
                   senderFileModel.objects.create(file=file,author=user)
-                  messages.success(request,'File Uploaded successfully')
+                  messages.success(request,' Sender Email File Uploaded successfully')
                   temp = True
 
             elif int(value) == 2:
                   user = request.user
                   file = request.FILES['file']
                   receiverFileModel.objects.create(file=file,author=user)
-                  messages.success(request,'File Uploaded successfully')
+                  messages.success(request,'Recipients Email File Uploaded successfully')
                   temp = True
 
       context = {'form1':form1,'form2':form2}
@@ -185,7 +185,6 @@ def updatefile(request,id,value):
                         datalist = list(f)
                   x=1
             datalist.sort()
-            print(datalist)
             return render(request,'updatefile.html',{'data':datalist,'x':x})
 
 

@@ -157,20 +157,6 @@
             <center>
                   <br><br><br><br>
 
-                  <form action="">
-                        
-                        {% for msg in messages %}
-                        <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
-                                    <div class="col col-4">
-                                          <strong>{{ msg }}</strong>
-                                    </div>
-                                    <div class=" col col-1 offset-7">
-                                          <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
-                                    </div>
-                              </div> 
-                              
-                        {% endfor %}
-                  </form>
                   <form method="POST" action="{% url 'register' %}">
                         <div class="box">
 
@@ -178,7 +164,7 @@
 
                               <div class="inputbox">
                                     <!-- <input class='input' type="email" id="id_email" value="{{ request.session.email }}" readonly onkeypress="myfunction()" name="email"> -->
-                                    {% render_field form.username placeholder=' ' class='input' value='{{ request.session.email }}' %}
+                                    {% render_field form.username placeholder=' ' class='input' required="required" value='{{ request.session.email }}' %}
 
                                     <label for="id_email" class="label" for="email">Username</label>
 

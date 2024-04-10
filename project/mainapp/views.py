@@ -1,18 +1,38 @@
 from django.shortcuts import render,HttpResponse,redirect
 from .forms import receiverForm
 from user.models import senderFileModel,receiverFileModel
-from project.celery import add
-from .tasks import send_mail, add
+from .tasks import sendMail,add
+from celery.result import AsyncResult
 from django.contrib.auth.models import User
 from django.contrib import messages 
-
 import re
 
 
+from django.core.mail import EmailMultiAlternatives
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+            
+ 
 # Create your views here.
 
-def  home(request): 
+def  home(request):
+      try:
+            if request.session['otp']:
+                  del request.session['otp']
+            if request.session['email']:
+                  del request.session['email']
+      except:
+            pass
 
+
+
+      # subject, from_email, to = "hello", "bulkmail1@geektheo.com", "mahendrasinghstudy6977@gmail.com"
+      # text_content = "This is an important message."
+      # html_content = "<p>This is an <br><strong>i<h1>mportant</h1></strong> message.</p>"
+      # msg = EmailMultiAlternatives(subject,html_content, from_email, [to])
+      # msg.attach_alternative(html_content, "text/html")
+      # msg.send()
+      
       return render(request,'index.html')
 
 def sendmail(request):
@@ -20,6 +40,7 @@ def sendmail(request):
             subject = request.POST['subject']
             message = request.POST['message']
             number = request.POST['number']
+            task_name = request.POST['task_name']
             try:
                   id = request.POST['file']
             except:
@@ -29,19 +50,21 @@ def sendmail(request):
             file = receiverFileModel.objects.get(id=id)
 
             receiver=[]
+            failed_receiver = []
             with open(file.file.path,'r') as f:
                   f=f.read().splitlines()
                   for i in f:
                         if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9][A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',i):
                               receiver.append(i)
-            sender = []
+                        else:
+                              failed_receiver.append(i)
             try:
                   files = senderFileModel.objects.all()
-                  print(files)
             except:
                   messages.success(request,'Please Upload sender email cridential file')
                   return render(request,'composeMail.html')
 
+            sender = []
 
             for file in files:
                   if request.user == file.author:
@@ -49,14 +72,18 @@ def sendmail(request):
                               f=f.read().splitlines()
                               for email in f:
                                     sender.append(email.split(','))
-                                    # print(email.split(','))
             
             sender = dict(sender)
-                                          
-            sending = send_mail.delay(sender, receiver, message, subject, number)
-            messages.success(request,'Mail sending in progress! do not refresh page')
+            context=[sender, receiver,  subject, message, number, task_name, failed_receiver]
+            task = sendMail.delay(context)
+            request.session['task_id'] = task.id
+            messages.success(request,'Mail sending in progress! you can check progress in result tab.  do not refresh page.')
 
       return redirect('home')
+
+def result(request,id):
+      result = AsyncResult(id)
+      return render(request,"result.html",{'result':result})
 
 
 

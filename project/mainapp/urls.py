@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
       path('',views.home,name='home'), 
-      path('home',views.sendmail,name='mail')
+      path('home',views.sendmail,name='mail'),
+      path('result/<str:id>',views.result,name='result')
 
 ]

@@ -18,6 +18,10 @@ DEBUG = True
 # ALLOWED_HOSTS = ['127.0.0.1']
 ALLOWED_HOSTS = []
 
+# session age
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
 
 # Application definition
 
@@ -38,6 +42,8 @@ INSTALLED_APPS = [
     
     # django cleanup for removing unwanted files
     'django_cleanup.apps.CleanupConfig',
+
+    'django_celery_results'
 ]
 
 MIDDLEWARE = [
@@ -136,32 +142,33 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gmahendrasingh304@gmail.com'
-EMAIL_HOST_PASSWORD = 'khblgwegzayibvxx'#gmahendrasingh@gmail.com gmail app password
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'gmahendrasingh304@gmail.com'
+# EMAIL_HOST_PASSWORD = 'khblgwegzayibvxx'#gmahendrasingh@gmail.com gmail app password
 # EMAIL_HOST_USER = 'mahendrasinghstudy6977@gmail.com'
 # EMAIL_HOST_PASSWORD = 'lsibuydqmqjgoohv' #gmahendrasingh@gmail.com microsoft app password
 # EMAIL_HOST_PASSWORD = 'wnpnidzcozxygqiy' #mahendrasinghstudy6977@gmail.com gmail app password
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'# django email smtp backends
-# EMAIL_HOST = 'mail.geektheo.com'  # Email service provider
-# EMAIL_PORT = 465  # Port for outgoing smtp servr
-# EMAIL_USE_TLS = True  # Use TLS for secure communication
-# EMAIL_HOST_USER = 'bulkmail1@geektheo.com'  # Email address
-# EMAIL_HOST_PASSWORD = 'bulkmail1@bulkmail1'  # Email password
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.geektheo.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'bulkmail1@geektheo.com'
+EMAIL_HOST_PASSWORD = 'bulkmail1@bulkmail1'
 
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 
+
 CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND='redis://localhost:6379'
+CELERY_RESULT_BACKEND='django-db'
+CELERY_CACHE_BACKEND='django_cache'
 CELERY_ACCEPT_CONTENT=['application/json']
 CELERY_RESULT_SERIALIZER='json'
 CELERY_TASK_SELERLIZER='json'

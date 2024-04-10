@@ -169,18 +169,7 @@
 
   <body>
     <center><br><br><br><br>
-      {% for msg in message %}
       
-        <div id="alert" class=" alert row text-light alert-dark bg-dark" role="alert">
-                  <div class="col col-4">
-                        <strong>{{ msg }}</strong>
-                  </div>
-                  <div class=" col col-1 offset-7">
-                        <button class="btn text-light p-1 my-0 " onclick='hide()'>close</button>
-                  </div>
-            </div>
-             
-      {% endfor %}
       
       <form action="" method="POST">
 
@@ -220,13 +209,7 @@
         {% csrf_token %}
       </form>
 
-      <script>
-
-        function hide() {
-          document.getElementById('message').style.display = 'none';
-        }
-
-        
+      <script>       
 
         const togglePassword = document.querySelector("#togglePassword");
         const password = document.querySelector("#password");
