@@ -69,26 +69,23 @@
                                                 <p>Files Uploaded by You</p>
                                                 <div class="col ">
                                                       <div class="rounded p-3  border offset-1">
-                                                            {% for file in sender %}
-                                                            {% if file.author == request.user %}
-                                                            <ul>
+                                                            <ol>
+                                                                  <li>Email-service-provider: <b>{{ file.esp }}</b></li>
+                                                                  <li>smtp Port: <b>{{ file.port }}</b></li>
                                                                   <li>{{ file.file.name }}
                                                                         <a class="btn btn-success " href="{{ file.file.url }}">Download</a>
                                                                         <a class="btn btn-primary " href="{% url 'update' value=0 id=file.id  %}">See File</a>
-
-                                                                        
                                                                   </li>
-                                                            </ul>
-                                                            {% endif %}
-                                                            {% endfor %}
+                                                            </ol>
                                                             <a class="btn bg-secondary border" href="{% url 'uploadfile' %}"> Upload Another</a>
-                                                            <p><i style='color:rgb(0,0,0);'>If you Upload another file previouse file will be delete automatically <br>
-                                                                        you can download file and add more credential
-                                                                  </i></p>
+                                                            <i>
+                                                                  <p style='color:rgb(255,255,0);'>If you Upload another file previouse file will be delete automatically </p>
+                                                                  <p style='color:rgb(0,200,0);'>you can download file and add more credential</p>
+                                                            </i>
                                                       </div>
 
                                                 </div>
-                                                <div class="col col-7 ">
+                                                <div class="col">
                                                       <div class="rounded p-3  border ">
                                                             <ol>
                                                                   {% for file in receiver %}
@@ -98,7 +95,7 @@
                                                                               <table class="table">
                                                                                     <tbody>
                                                                                           <tr>
-                                                                                                <div class="col">
+                                                                                                <div class="col col-4   ">
                                                                                                       {{ file.file.name }}
                                                                                                 </div>
                                                                                           </tr>
@@ -133,7 +130,7 @@
             </div>
 
             <!-- Bootstrap JS (optional) -->
-            
+
 
 
 

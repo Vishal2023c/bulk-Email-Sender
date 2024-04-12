@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse,redirect
 from .forms import receiverForm
 from user.models import senderFileModel,receiverFileModel
-from .tasks import sendMail,add
+from .tasks import bulk_mail_sender,add
 from celery.result import AsyncResult
 from django.contrib.auth.models import User
 from django.contrib import messages 
@@ -23,15 +23,7 @@ def  home(request):
                   del request.session['email']
       except:
             pass
-
-
-
-      # subject, from_email, to = "hello", "bulkmail1@geektheo.com", "mahendrasinghstudy6977@gmail.com"
-      # text_content = "This is an important message."
-      # html_content = "<p>This is an <br><strong>i<h1>mportant</h1></strong> message.</p>"
-      # msg = EmailMultiAlternatives(subject,html_content, from_email, [to])
-      # msg.attach_alternative(html_content, "text/html")
-      # msg.send()
+      
       
       return render(request,'index.html')
 
@@ -65,25 +57,37 @@ def sendmail(request):
                   return render(request,'composeMail.html')
 
             sender = []
+            esp = str
+            port = int
 
             for file in files:
                   if request.user == file.author:
+                        esp = file.esp
+                        port = file.port
+
                         with open(file.file.path,"r") as f:
                               f=f.read().splitlines()
                               for email in f:
                                     sender.append(email.split(','))
             
             sender = dict(sender)
-            context=[sender, receiver,  subject, message, number, task_name, failed_receiver]
-            task = sendMail.delay(context)
-            request.session['task_id'] = task.id
+            context=[sender, receiver,  subject, message, number, task_name, failed_receiver,esp,port]
+            task = bulk_mail_sender.delay(context)
+            request.session['task'] = task.id
             messages.success(request,'Mail sending in progress! you can check progress in result tab.  do not refresh page.')
 
       return redirect('home')
 
 def result(request,id):
-      result = AsyncResult(id)
-      return render(request,"result.html",{'result':result})
+      try:
+            task_result = AsyncResult(id)
+            sender, recipients, failed_recipients, failed_sender,success_recipient,    task_name = task_result.result
+            context = {"sender":sender, "recipients":recipients,  "failed_recipients":failed_recipients, "failed_sender":failed_sender,    "success_recipient":success_recipient, "task_name":task_name}
+      except Exception as e:
+            pass
+
+      print(task_name)
+      return render(request,"result.html",context)
 
 
 

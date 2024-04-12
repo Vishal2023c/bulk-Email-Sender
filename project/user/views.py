@@ -79,9 +79,10 @@ def register(request):
 
 @login_required
 def profile(request):  
-      senderfile = senderFileModel.objects.all()
+      user = request.user
+      file = senderFileModel.objects.get(author=user)
       receiverfile = receiverFileModel.objects.all()
-      context = {'sender':senderfile, "receiver":receiverfile}
+      context = {'file':file, "receiver":receiverfile}
 
       return render(request, 'profile.html',context)
 
@@ -133,11 +134,13 @@ def uploadfile(request):
             if int(value) == 1:
                   user = request.user
                   file = request.FILES['file']
+                  esp = request.POST['esp']
+                  port = request.POST['port']
                   model = senderFileModel.objects.all()
                   for i in model:
                         if request.user==i.author:
                               i.delete()
-                  senderFileModel.objects.create(file=file,author=user)
+                  senderFileModel.objects.create(file=file,author=user,esp=esp,port=port)
                   messages.success(request,' Sender Email File Uploaded successfully')
                   temp = True
 

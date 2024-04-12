@@ -5,7 +5,7 @@ from .models import receiverFileModel,senderFileModel
 @admin.register(senderFileModel)
 class senderRegister(admin.ModelAdmin):
       list_display=[
-            'id', 'file', 'author'
+            'id', 'file','esp','port', 'author'
       ]
 
 @admin.register(receiverFileModel)

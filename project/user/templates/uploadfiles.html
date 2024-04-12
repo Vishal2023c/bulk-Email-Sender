@@ -8,17 +8,24 @@
 
 {% block content %}
 <br><br><br>
-      
+
 <div class="container "><br><br>
-      
+
       <div class="row">
             <div style="border: 2px solid gray; border-radius : 30px;" class=" border-light col-sm-5">
-                  <form class='p-5' method="post" enctype="multipart/form-data" action="">
-                        <br>
+                  <form class='p-3' method="post" enctype="multipart/form-data" action="">
+                        <h4>Sender Emails </h4>
 
-                        <label>Select the CSV/TXT File Containing Email & Password That Will be Used To Send Mail<br> Choose Only CSV/TXT </label>
-                        <br><br>
-                        {{form1.file}}<br><br>
+                        <label>Select File that Containing Email & Password That Will be Used To Send Mail<br> <br>Choose Only CSV/TXT </label>
+                        <br>
+                        {{form1.file}}<br>
+
+                        <label for="id_esp">Choose Email service provide(ESP)</label>
+                        {{ form2.esp }}<br>
+
+                        <label for="id_port">Port number</label><br>
+                        {{ form1.port }}<br><br>
+
                         <input type="hidden" value="{{ user.username }}" name="author" id='id_author'>
 
                         <input type="hidden" name="value" value="1">
@@ -31,7 +38,7 @@
 
             </div>
             <div style="border: 2px solid gray; border-radius: 30px;" class="border-light col-sm-5 offset-2">
-                  <form class='p-5' method="post"  enctype="multipart/form-data" action="">
+                  <form class='p-5' method="post" enctype="multipart/form-data" action="">
 
                         <br>
 
@@ -51,5 +58,5 @@
 
             </div>
       </div>
-      
+
       {% endblock content %}

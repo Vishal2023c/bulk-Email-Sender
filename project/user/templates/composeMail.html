@@ -2,11 +2,14 @@
 
 {% block composemail_active %}active{% endblock composemail_active %}
 
+{% block style %}
+
+
+{% endblock style %}
 {% block content %}
 {% load my_tags %}
 
 
-<!DOCTYPE html>
 <br><br><br>
 
 
@@ -41,7 +44,7 @@
                               <h4><label for="type">choose file to send mail</label></h4>
                               <div class="col col-5">
 
-                                    <select required class='form-select' name="file" id="id_file">
+                                    <select style="color: white;background-color: rgb(32, 29, 29)"  required class='form-select' name="file" id="id_file">
                                           <option disabled selected value="">Select</option>
 
                                           {% for file in files %}
@@ -53,7 +56,7 @@
 
                               </div><br>
                               <div class="col col-5">
-                                    <label for="task_name"> Write Task Name:</label>
+                                    <label for="task_name"> Name for task to remember  :</label>
                               <input title='Name for task to remember it' required style="color: white;background-color: rgb(32, 29, 29)" type="Text" name="task_name" id="id_task" class="form-control input">
                                     </div>
 

@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from .models import receiverFileModel,senderFileModel
 
 
+CHOICES = {465: "465 (Secure - Recommended)"}
+
 
 class UserRegisterForm(UserCreationForm):
 
@@ -20,8 +22,11 @@ class senderFileForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(senderFileForm, self).__init__(*args, **kwargs)
-        self.fields['file'].widget.attrs['class'] = 'form-class'
         self.fields['file'].widget.attrs['accept'] = '.csv, .txt'
+        self.fields['file'].widget.attrs['class'] = 'form-control'
+        self.fields['esp'].widget.attrs['class'] = 'form-control'
+        self.fields['esp'].widget.attrs['placeholder'] = 'ex. smtp.gmail.com'
+        self.fields['port'].widget=forms.RadioSelect(choices = CHOICES)
 
 class receiverFileForm(forms.ModelForm):
     class Meta:
@@ -29,7 +34,7 @@ class receiverFileForm(forms.ModelForm):
         fields = "__all__"
     def __init__(self, *args, **kwargs):
         super(receiverFileForm, self).__init__(*args, **kwargs)
-        self.fields['file'].widget.attrs['class'] = 'form-class'
+        self.fields['file'].widget.attrs['class'] = 'form-control'
         self.fields['file'].widget.attrs['accept'] = '.csv, .txt'
 
 
