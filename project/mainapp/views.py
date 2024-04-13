@@ -27,29 +27,46 @@ def  home(request):
       
       return render(request,'index.html')
 
+
+# def sendmail(request):
+#       emails = str(request.POST['email_area'])
+#       emails = emails.split()
+#       # recipients = []
+#       for email in emails:
+#             if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9][A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',email):
+#                   recipients.append(email)
+#       print(recipients)
+#       return redirect('composeMail')
+
 def sendmail(request):
       if request.method == "POST":
             subject = request.POST['subject']
             message = request.POST['message']
             number = request.POST['number']
             task_name = request.POST['task_name']
+            receiver=[]
+            wrong_receiver = []
             try:
                   id = request.POST['file']
+                  file = receiverFileModel.objects.get(id=id)
+                  with open(file.file.path,'r') as f:
+                        f=f.read().splitlines()
+                        for i in f:
+                              if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9][A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',i):
+                                    receiver.append(i)
+                              else:
+                                    wrong_receiver.append(i)
+
             except:
-                  messages.success(request,'Please select Recipients email list')
-                  return render(request,'composeMail.html')
+                  emails = str(request.POST['email_area'])
+                  emails = emails.split()                         
+                  for email in emails:
+                        if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9][A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',email):
+                              receiver.append(email)
+      
 
-            file = receiverFileModel.objects.get(id=id)
 
-            receiver=[]
-            failed_receiver = []
-            with open(file.file.path,'r') as f:
-                  f=f.read().splitlines()
-                  for i in f:
-                        if re.match(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9][A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',i):
-                              receiver.append(i)
-                        else:
-                              failed_receiver.append(i)
+            
             try:
                   files = senderFileModel.objects.all()
             except:
@@ -71,7 +88,7 @@ def sendmail(request):
                                     sender.append(email.split(','))
             
             sender = dict(sender)
-            context=[sender, receiver,  subject, message, number, task_name, failed_receiver,esp,port]
+            context=[sender, receiver,  subject, message, number, task_name, wrong_receiver,esp,port]
             task = bulk_mail_sender.delay(context)
             request.session['task'] = task.id
             messages.success(request,'Mail sending in progress! you can check progress in result tab.  do not refresh page.')
@@ -83,11 +100,13 @@ def result(request,id):
             task_result = AsyncResult(id)
             sender, recipients, failed_recipients, failed_sender,success_recipient,    task_name = task_result.result
             context = {"sender":sender, "recipients":recipients,  "failed_recipients":failed_recipients, "failed_sender":failed_sender,    "success_recipient":success_recipient, "task_name":task_name}
+            return render(request,"result.html",context)
+
       except Exception as e:
             pass
+      return render(request,"result.html")
 
-      print(task_name)
-      return render(request,"result.html",context)
+
 
 
 

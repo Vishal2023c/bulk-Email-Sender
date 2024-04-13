@@ -20,7 +20,7 @@ def bulk_mail_sender(context):
       message =    context[3]
       number =int(context[4])
       task_name = context[5]
-      failed_recipients = context[6]
+      wrong_recipients = list(context[6])
       esp = context[7]
       port = int(context[8])
       success_recipient = []
@@ -40,12 +40,17 @@ def bulk_mail_sender(context):
                         send_mail(subject, message, settings.EMAIL_HOST_USER,[recipients[index]], fail_silently=False, html_message=message)
                         success_recipient.append(recipients[index])
                         index += 1
+                  except Exception.SMTPRecipientsRefused:
+                        wrong_recipients.append(recipients[index])
+                        index += 1
+
+
                   except Exception as e:
                         failed_sender.append(username)
                         print(e)
                         break
                   if index == len(recipients):
-                        content = [sender, recipients, failed_recipients, failed_sender,success_recipient, task_name]
+                        content = [sender, recipients, wrong_recipients, failed_sender,success_recipient, task_name]
                         return content
 
 

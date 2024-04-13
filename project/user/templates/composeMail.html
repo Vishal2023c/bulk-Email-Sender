@@ -3,7 +3,15 @@
 {% block composemail_active %}active{% endblock composemail_active %}
 
 {% block style %}
+input::placeholder {
+color: red;
+/* Main rule for modern browsers */
+}
 
+textarea::placeholder {
+color: red;
+/* Main rule for modern browsers */
+}
 
 {% endblock style %}
 {% block content %}
@@ -16,7 +24,7 @@
 <div class="container-fluid">
 
       <div style=" display:flex; background-color: rgb(26, 30, 33);" class="row">
-            
+
             <div class="col col-sm-12 rounded">
 
                   <h3 class="pl-4">Compose mail</h3>
@@ -35,16 +43,17 @@
                               <input required style="color: white;background-color: rgb(32, 29, 29)" type="number" name="number" id="id_number" class="form-control input">
                               <p>Number shuold be less than 200.</p>
 
-                              <input type="submit" class="btn btn-secondary bg-dark" value="Send">
-
                         </div>
                         {% if files %}
 
                         <div class="col col-sm-7 offset-1">
-                              <h4><label for="type">choose file to send mail</label></h4>
-                              <div class="col col-5">
+                              <input onclick="showFileOption()" type="checkbox" id='check_file'> <label for="check_file"> Choose File</label><br>
+                              <input onclick="showTextarea()" type="checkbox" id='check_email'> <label for="check_email"> Write Emails</label>
 
-                                    <select style="color: white;background-color: rgb(32, 29, 29)"  required class='form-select' name="file" id="id_file">
+                              <div style="display: none;" id='choose_file' class="col col-5">
+
+                                    <h4><label for="type">choose file to send mail</label></h4>
+                                    <select style="color: white;background-color: rgb(32, 29, 29)" class='form-select' name="file" id="id_file">
                                           <option disabled selected value="">Select</option>
 
                                           {% for file in files %}
@@ -54,15 +63,20 @@
                                     </select>
 
 
-                              </div><br>
+                              </div>
+                              <div style="display:none;" id="email_area" class="  col col-7">
+                                    <textarea placeholder="Write or past Emails here" style=" color: white;background-color: rgb(32, 29, 29)" class="form-control" name="email_area" id="id_textarea" cols="50" rows="10"></textarea>
+                              </div>
+                              <br>
                               <div class="col col-5">
-                                    <label for="task_name"> Name for task to remember  :</label>
-                              <input title='Name for task to remember it' required style="color: white;background-color: rgb(32, 29, 29)" type="Text" name="task_name" id="id_task" class="form-control input">
-                                    </div>
+                                    <label for="task_name"> Name for task to remember :</label>
+                                    <input title='Name for task to remember it' required style="color: white;background-color: rgb(32, 29, 29)" type="Text" name="task_name" id="id_task" class="form-control input">
+                              </div>
 
 
                         </div>
                         {% else %}
+
                         <div class="col col-sm-7 offset-1">
                               <h4>Please Upload Recipients listFile</h4>
                               <a class="btn btn-secondary" href="{% url 'uploadfile' %}">Upload file</a>
@@ -70,6 +84,13 @@
                         </div>
 
                         {% endif %}
+                        <hr>
+                        <div class="row">
+                              <div class="col col-5"></div>
+                              <div class="col-3  align-items-center">
+                                    <input type="submit" class="btn btn-primary" value="Send Mail">
+                              </div>
+                        </div>
 
 
                         {% csrf_token %}
@@ -85,10 +106,27 @@
 <!-- Bootstrap JS (optional) -->
 
 <script>
-      
 
-      const radio = document.getElementById('area').value
-      console.log(radio)
-      document.getElementById('id_area')
+
+      function showFileOption() {
+            document.getElementById("check_email").checked = false
+            document.getElementById("choose_file").style.display = 'block'
+            document.getElementById("email_area").style.display = 'none'
+
+
+            document.getElementById("id_file").required = true
+            document.getElementById("id_textare").required = false
+
+      }
+
+      function showTextarea() {
+            document.getElementById("check_file").checked = false
+            document.getElementById("choose_file").style.display = 'none'
+            document.getElementById("email_area").style.display = 'block'
+
+
+            document.getElementById("id_file").required = false
+            document.getElementById("id_textare").required = true
+      }
 </script>
 {% endblock content %}

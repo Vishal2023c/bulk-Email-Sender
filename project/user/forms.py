@@ -25,7 +25,7 @@ class senderFileForm(forms.ModelForm):
         self.fields['file'].widget.attrs['accept'] = '.csv, .txt'
         self.fields['file'].widget.attrs['class'] = 'form-control'
         self.fields['esp'].widget.attrs['class'] = 'form-control'
-        self.fields['esp'].widget.attrs['placeholder'] = 'ex. smtp.gmail.com'
+        self.fields['esp'].widget.attrs['placeholder'] = 'ex. mail.geeektheo.com'
         self.fields['port'].widget=forms.RadioSelect(choices = CHOICES)
 
 class receiverFileForm(forms.ModelForm):
